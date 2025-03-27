@@ -3,19 +3,15 @@ import time
 import hashlib
 import hmac
 import configparser
-import urllib.parse
 import os
+import json  # Thêm thư viện json để lưu file
 
 # Đọc API Key từ file config
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-# API_KEY = config["keys"]["api_key"].strip()
-# SECRET_KEY = config["keys"]["secret_key"].strip()
-
-
-API_KEY = os.getenv('API_KEY')
-SECRET_KEY = os.getenv('SECRET_KEY')
+BINANCE_API_KEY = config["keys"]["BINANCE_API_KEY"].strip()
+BINANCE_SECRET_KEY = config["keys"]["BINANCE_SECRET_KEY"].strip()
 
 # Endpoint Binance
 BINANCE_API_URL = "https://api.binance.com/api/v3/account"
@@ -28,14 +24,14 @@ query_string = f"timestamp={timestamp}"
 
 # Tạo chữ ký (signature) bằng HMAC-SHA256
 signature = hmac.new(
-    SECRET_KEY, 
+    BINANCE_SECRET_KEY.encode('utf-8'), 
     query_string.encode('utf-8'), 
     hashlib.sha256
 ).hexdigest()
 
 # Gửi request với chữ ký
 headers = {
-    "X-MBX-APIKEY": API_KEY
+    "X-MBX-APIKEY": BINANCE_API_KEY
 }
 
 params = {
@@ -45,4 +41,11 @@ params = {
 
 response = requests.get(BINANCE_API_URL, headers=headers, params=params)
 
-print(response.json())
+# Chuyển phản hồi sang JSON
+data = response.json()
+
+# Lưu vào file JSON
+with open("binance_response.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=4)
+
+print("Dữ liệu đã được lưu vào binance_response.json")
