@@ -4,13 +4,13 @@ import hashlib
 import hmac
 import configparser
 import json 
+import os
+from dotenv import load_dotenv
 
-# Đọc API Key từ file config
-config = configparser.ConfigParser()
-config.read("../../config.ini")
+load_dotenv()
 
-BINANCE_API_KEY = config["binance_keys"]["BINANCE_API_KEY"].strip()
-BINANCE_SECRET_KEY = config["binance_keys"]["BINANCE_SECRET_KEY"].strip()
+BINANCE_API_KEY = os.getenv("BINANCE_API_KEY")
+BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
 # Tạo timestamp
 timestamp = int(time.time() * 1000)
@@ -49,5 +49,3 @@ data = response.json()
 # Lưu vào file JSON
 with open("coin_price.json", "w", encoding="utf-8") as f:
     json.dump(data, f, indent=4)
-
-print("Dữ liệu giá coin đã được lưu vào coin_price.json")

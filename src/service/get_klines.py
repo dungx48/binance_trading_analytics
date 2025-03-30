@@ -1,24 +1,31 @@
 import requests
+import pandas as pd
 import json
 
-# Endpoint Binance
-BINANCE_API_URL = "https://api.binance.com/api/v3/klines"
-
-# Cấu hình tham số
+# Gọi API Binance
+url = "https://api.binance.com/api/v3/klines"
 params = {
-    "symbol": "BTCUSDT",  # Cặp coin
-    "interval": "1h",  # Khung thời gian (1m, 5m, 1h, 1d, 1w...)
-    "limit": 100  # Số lượng nến lấy về
+    "symbol": "BTCUSDT",
+    "interval": "1h",
+    "limit": 1000
 }
-
-# Gửi request
-response = requests.get(BINANCE_API_URL, params=params)
-
-# Chuyển phản hồi sang JSON
+response = requests.get(url, params=params)
 data = response.json()
 
-# Lưu vào file
-with open("btc_ohlc_1h.json", "w", encoding="utf-8") as f:
-    json.dump(data, f, indent=4)
+# Chuyển dữ liệu vào DataFrame
+df = pd.DataFrame(data, columns=[
+    "timestamp", "open", "high", "low", "close", "volume", 
+    "close_time", "quote_volume", "trades", 
+    "taker_base", "taker_quote", "ignore"
+])
 
-print("Dữ liệu nến đã được lưu vào btc_ohlc_1h.json")
+# Chuyển timestamp về datetime
+df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+
+# Giữ lại các cột quan trọng
+df = df[["timestamp", "open", "high", "low", "close", "volume"]]
+
+# Chuyển dữ liệu về dạng số
+df[["open", "high", "low", "close", "volume"]] = df[["open", "high", "low", "close", "volume"]].astype(float)
+
+print(df.head())
