@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 import time
-from database.db_connection import get_db_connection
+from database.db_connection import DatabaseConnection
 
 # Hàm lấy dữ liệu từ Binance API
 def get_historical_klines(symbol, interval, start_time, end_time):
@@ -36,7 +36,8 @@ def get_historical_klines(symbol, interval, start_time, end_time):
 
 # Hàm lưu dữ liệu vào database
 def save_to_db(data):
-    conn = get_db_connection()
+    db = DatabaseConnection()
+    conn = db.connection
     cursor = conn.cursor()
 
     # Chuyển dữ liệu về dạng tuple để chèn vào DB

@@ -1,4 +1,4 @@
-from database.db_connection import get_db_connection
+from database.db_connection import DatabaseConnection
 from utils.logger import log_info
 import requests
 import os
@@ -13,7 +13,8 @@ BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
 
 def get_coin_name():
-    conn = get_db_connection()
+    db = DatabaseConnection()
+    conn = db.connection
     cursor = conn.cursor()
 
     # Lấy dữ liệu từ API Binance

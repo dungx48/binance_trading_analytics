@@ -2,7 +2,7 @@ import asyncio
 import websockets
 import json
 from datetime import datetime, timezone
-from database.db_connection import get_db_connection
+from database.db_connection import DatabaseConnection
 from database.partition_manager import create_partition_if_not_exists
 from utils.logger import log_info
 
@@ -11,7 +11,8 @@ async def fetch_binance():
     url = "wss://stream.binance.com:9443/ws/btcusdt@kline_1s"
 
     async with websockets.connect(url) as ws:
-        conn = get_db_connection()
+        db = DatabaseConnection()
+        conn = db.connection
         cursor = conn.cursor()
 
         while True:
