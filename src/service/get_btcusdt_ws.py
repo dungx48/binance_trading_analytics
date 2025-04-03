@@ -40,7 +40,3 @@ async def fetch_binance():
 
             conn.commit()
             log_info(f"Saved: {row}")
-
-# Chạy WebSocket
-if __name__ == "__main__":
-    asyncio.run(fetch_binance())
