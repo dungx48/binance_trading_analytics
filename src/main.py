@@ -1,5 +1,5 @@
 import asyncio
-from service.btcusdt_ws import fetch_binance
+from service.get_btcusdt_ws import fetch_binance
 from utils.logger import log_info
 from dotenv import load_dotenv
 
