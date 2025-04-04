@@ -1,4 +1,4 @@
-from database.db_connection import DatabaseConnection
+from repository.db_connection import DatabaseConnection
 
 def create_partition_if_not_exists(timestamp):
     """Tạo partition tự động nếu chưa tồn tại"""

@@ -1,8 +1,8 @@
 import websockets
 import json
 from datetime import datetime, timezone
-from database.db_connection import DatabaseConnection
-from database.partition_manager import create_partition_if_not_exists
+from repository.db_connection import DatabaseConnection
+from repository.partition_manager import create_partition_if_not_exists
 from utils.logger import log_info
 
 async def fetch_binance():

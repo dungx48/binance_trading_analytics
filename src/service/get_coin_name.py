@@ -1,4 +1,4 @@
-from database.db_connection import DatabaseConnection
+from repository.db_connection import DatabaseConnection
 from utils.logger import log_info
 import requests
 import os
