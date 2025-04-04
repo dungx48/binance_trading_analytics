@@ -17,7 +17,7 @@ def get_historical_klines(symbol, interval, start_time, end_time):
             "endTime": end_time,
             "limit": limit
         }
-        
+
         response = requests.get(url, params=params)
         data = response.json()
 
@@ -25,36 +25,36 @@ def get_historical_klines(symbol, interval, start_time, end_time):
             break
 
         all_data.extend(data)
-        
+
         # Lấy timestamp của dòng cuối cùng làm mốc cho lần request tiếp theo
         start_time = data[-1][0] + 1  
-        
+
         # Tránh bị rate limit
         time.sleep(1)
 
     return all_data
 
 # Hàm lưu dữ liệu vào database
-def save_to_db(data):
+def save_to_db(data, symbol):
     db = DatabaseConnection()
     conn = db.connection
     cursor = conn.cursor()
 
     # Chuyển dữ liệu về dạng tuple để chèn vào DB
-    formatted_data = [(row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
+    formatted_data = [(symbol, row[0], row[1], row[2], row[3], row[4], row[5]) for row in data]
 
     # Chèn vào DB
     sql = """
-    INSERT INTO binance_prices1 (timestamp, open, high, low, close, volume)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    ON CONFLICT (timestamp) DO NOTHING;
+    INSERT INTO binance_prices_historical (symbol, timestamp, open, high, low, close, volume)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (symbol, timestamp) DO NOTHING;
     """
-    
+
     cursor.executemany(sql, formatted_data)
     conn.commit()
-    
+
     print(f"✅ Đã lưu {len(formatted_data)} dòng vào database!")
-    
+
     cursor.close()
     conn.close()
 
@@ -62,13 +62,13 @@ def save_to_db(data):
 if __name__ == "__main__":
     symbol = "BTCUSDT"
     interval = "1d"
-    start_time = int(pd.Timestamp("2020-01-01").timestamp() * 1000)  # Dữ liệu từ 2020
+    start_time = int(pd.Timestamp("2017-01-01").timestamp() * 1000)  # Dữ liệu từ 2017
     end_time = int(pd.Timestamp.now().timestamp() * 1000)
 
     # Lấy dữ liệu từ Binance API
     data = get_historical_klines(symbol, interval, start_time, end_time)
 
     if data:
-        save_to_db(data)
+        save_to_db(data, symbol)
     else:
         print("⚠️ Không có dữ liệu để lưu!")

@@ -1,4 +1,4 @@
-from database.db_connection import get_db_connection
+from database.db_connection import DatabaseConnection
 
 def create_partition_if_not_exists(timestamp):
     """Tạo partition tự động nếu chưa tồn tại"""
@@ -21,7 +21,8 @@ def create_partition_if_not_exists(timestamp):
     """
 
     # Mở kết nối riêng để tránh khóa bảng chính
-    with get_db_connection() as conn:
+    db = DatabaseConnection()
+    with db.connection as conn:
         with conn.cursor() as cursor:
             cursor.execute(partition_sql)
             conn.commit()
