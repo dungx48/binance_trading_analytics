@@ -7,6 +7,7 @@ from model.request.klines_request import KlinesRequest
 from model.enums.time_enums import TimeEnums
 from repository.redis_connection import RedisConnection
 from service.get_coin_name import CoinInfoService
+
 class FetchBinanceKlinesDailyService():
     def __init__(self):
         redis = RedisConnection()

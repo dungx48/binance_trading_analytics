@@ -30,10 +30,8 @@ with DAG(
     catchup=False,
     tags=['binance', 'fetch'],
 ) as dag:
-
-    fetch_task = PythonOperator(
+    
+    PythonOperator(
         task_id='fetch_binance_data',
         python_callable=run_daily_producer,
     )
-
-    fetch_task
