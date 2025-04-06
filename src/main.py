@@ -8,5 +8,4 @@ if __name__ == "__main__":
     # Load biến môi trường từ .env
     load_dotenv()
     
-    log_info("Starting Binance WebSocket...")
-    asyncio.run(fetch_binance())
+    

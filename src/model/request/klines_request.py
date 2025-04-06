@@ -3,7 +3,7 @@ from typing import Optional
 
 @dataclass
 class KlinesRequest():
-    symbol:  str
+    symbol: str
     interval: str
     start_time: int
     end_time: int
