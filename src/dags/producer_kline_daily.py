@@ -1,20 +1,9 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
-from service.fetch_kline_daily_service.fetch_service import FetchBinanceKlinesDailyService
-from service.get_coin_name import CoinInfoService
-
-def run_daily_producer():
-    load_dotenv()
-    coin_info_service = CoinInfoService()
-    coins_name = coin_info_service.get_all_coins()
-    coins_usdt = {item + 'USDT' for item in coins_name}
-    for symbol in coins_usdt:
-        producer = FetchBinanceKlinesDailyService()
-        producer.fetch_and_push(symbol)
+from service.fetch_kline_daily_service.fetch_service import run_daily_producer
 
 default_args = {
     'owner': 'airflow',

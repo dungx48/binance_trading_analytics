@@ -22,10 +22,10 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 # Copy the project into the image
-ADD . /app
+COPY . /app
 
-    # Copy requirements.txt into the image
-    COPY requirements.txt /app/requirements.txt
+# Copy requirements.txt into the image
+COPY requirements.txt /app/requirements.txt
 
 # Sync the project into a new environment, using the frozen lockfile
 WORKDIR /app

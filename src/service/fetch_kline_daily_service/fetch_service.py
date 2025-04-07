@@ -1,6 +1,5 @@
 import json
 import requests
-import time
 from dotenv import load_dotenv
 
 from model.request.klines_request import KlinesRequest
@@ -77,12 +76,19 @@ class FetchBinanceKlinesDailyService():
         self.redis.rpush("klines_queue", json.dumps(message))
         print(f"✅ Pushed {symbol} data to Redis queue")
         
-
-# if __name__ == "__main__":
-#     load_dotenv()
-#     coin_info_service = CoinInfoService()
-#     coins_name = coin_info_service.get_all_coins()
-#     coins_usdt = {item + 'USDT' for item in coins_name}
-#     for coin in coins_usdt:
-#         producer = FetchBinanceKlinesDailyService()
-#         producer.fetch_and_push(coin)
+def run_daily_producer():
+    load_dotenv()
+    coin_info_service = CoinInfoService()
+    coins_name = coin_info_service.get_all_coins()
+    coins_usdt = {item + 'USDT' for item in coins_name}
+    for symbol in coins_usdt:
+        producer = FetchBinanceKlinesDailyService()
+        producer.fetch_and_push(symbol)
+if __name__ == "__main__":
+    load_dotenv()
+    coin_info_service = CoinInfoService()
+    coins_name = coin_info_service.get_all_coins()
+    coins_usdt = {item + 'USDT' for item in coins_name}
+    for coin in coins_usdt:
+        producer = FetchBinanceKlinesDailyService()
+        producer.fetch_and_push(coin)
