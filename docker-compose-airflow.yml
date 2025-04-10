@@ -245,6 +245,7 @@ services:
         # mkdir -p /sources/logs /sources/dags /sources/plugins
         # chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         mkdir -p /sources/logs
+        sudo chmod -R 777
         chown -R "${AIRFLOW_UID}:0" /sources/{logs}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
