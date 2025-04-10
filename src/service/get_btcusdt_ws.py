@@ -6,7 +6,7 @@ import asyncio
 
 from repository.db_connection import DatabaseConnection
 from repository.partition_manager import create_partition_if_not_exists
-from utils.logger import log_info
+from src.utils.log_consume import log_info
 
 async def fetch_binance():
     """Nhận dữ liệu từ Binance và lưu vào DB"""
@@ -46,7 +46,7 @@ async def fetch_binance():
 
 if __name__ == "__main__":
     # Load biến môi trường từ .env
-    load_dotenv()
+    # load_dotenv()
     
     log_info("Starting Binance WebSocket...")
     asyncio.run(fetch_binance())

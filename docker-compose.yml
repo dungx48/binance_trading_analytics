@@ -12,39 +12,8 @@ services:
       - .:/app
     environment:
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
-    # depends_on:
-    #   - db
-
-  # db:
-  #   image: postgres:15
-  #   container_name: binance_trading_analytics_db
-  #   environment:
-  #     POSTGRES_USER: ${DB_USER}
-  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
-  #     POSTGRES_DB: ${DB_NAME}
-  #   ports:
-  #     - "${DB_PORT}:${DB_PORT}"
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
-
-  # airflow:
-  #   image: apache/airflow:2.10.5
-  #   container_name: airflow_container
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-  #     - AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/dags
-  #     - AIRFLOW__CORE__LOAD_EXAMPLES=False
-  #     - AIRFLOW__WEBSERVER__USERNAME=${AIRFLOW_USER}
-  #     - AIRFLOW__WEBSERVER__PASSWORD=${AIRFLOW_PASSWORD}
-  #   volumes:
-  #     - ./src/dags:/opt/airflow/dags
-  #     # - ./airflow_logs:/opt/airflow/logs
-  #     # - ./airflow_plugins:/opt/airflow/plugins
-  #   command: ["bash", "-c", "airflow db init && airflow scheduler & airflow webserver"]
-  #   depends_on:
-  #     - app
+    env_file:
+      - .env
 
 volumes:
   db_data:
