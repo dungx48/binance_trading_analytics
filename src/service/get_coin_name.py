@@ -1,5 +1,5 @@
 from repository.db_connection import DatabaseConnection
-from utils.logger import log_info
+from utils.log_consume import log_info
 import requests
 import os
 from dotenv import load_dotenv
@@ -7,9 +7,9 @@ import time
 import hmac
 import hashlib
 
-load_dotenv()
-BINANCE_API_KEY = os.getenv("BINANCE_API_KEY")
-BINANCE_SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
+# load_dotenv()
+BINANCE_API_KEY = os.environ.get("BINANCE_API_KEY")
+BINANCE_SECRET_KEY = os.environ.get("BINANCE_SECRET_KEY")
 
 class CoinInfoService():
     def __init__(self):

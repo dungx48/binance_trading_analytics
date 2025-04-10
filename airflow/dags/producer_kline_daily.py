@@ -1,9 +1,11 @@
+import sys
+sys.path.append('/opt/airflow/src')
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-
 from datetime import datetime, timedelta
 
-from service.fetch_kline_daily_service.fetch_service import run_daily_producer
+from src.service.fetch_kline_daily_service.fetch_service import run_daily_producer
 
 default_args = {
     'owner': 'airflow',
@@ -19,8 +21,8 @@ with DAG(
     catchup=False,
     tags=['binance', 'fetch'],
 ) as dag:
-    
     PythonOperator(
         task_id='fetch_binance_data',
         python_callable=run_daily_producer,
+        
     )
