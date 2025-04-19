@@ -11,11 +11,10 @@ BINANCE_SECRET_KEY = os.environ.get("BINANCE_SECRET_KEY")
 
 class CoinInfoService():
     def __init__(self):
-        pass
+        self.exchange_info_url = os.environ.get("EXCHANGE_INFO_URL")
     def get_all_coins(self):
         # Lấy dữ liệu từ API Binance
-        url = "https://api.binance.com/api/v3/exchangeInfo"
-        response = requests.get(url)
+        response = requests.get(self.exchange_info_url)
         data = response.json()
 
         # Lấy danh sách các đồng coin từ các cặp giao dịch
@@ -57,7 +56,7 @@ class CoinInfoService():
         for symbol in self.get_all_coins():
             full_name = bnb_dict.get(symbol, symbol)  # Nếu không tìm thấy, giữ nguyên symbol
             sql = """
-                INSERT INTO CRYPTO_COINS (SYMBOL, COIN_NAME) 
+                INSERT INTO dim_coin (SYMBOL, COIN_NAME) 
                 VALUES (%s, %s) 
                 ON CONFLICT (SYMBOL) DO UPDATE 
                 SET COIN_NAME = EXCLUDED.COIN_NAME;
