@@ -10,7 +10,7 @@ from dataclasses import asdict
 from model.request.klines_request import KlinesRequest
 from model.dto.coin_metrics_dto import CoinMetricsDto
 from model.enums.time_enums import TimeEnums
-from src.repository.redis.redis_connection import RedisConnection
+from repository.redis.redis_connection import RedisConnection
 from service.get_coin_name import CoinInfoService
 from constant.app_constant import AppConst
 from utils.log_produce import setup_basic_logging

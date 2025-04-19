@@ -1,6 +1,6 @@
 import json
-from src.repository.postgredb.fetch_klines_repo import FetchKlinesRepository
-from src.repository.redis.redis_connection import RedisConnection
+from repository.postgredb.fetch_klines_repo import FetchKlinesRepository
+from repository.redis.redis_connection import RedisConnection
 from utils.log_consume import log_info, log_error
 
 class ConsumeKlinesDailyService:

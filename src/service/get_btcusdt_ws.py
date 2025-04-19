@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timezone
 import asyncio
 
-from src.repository.postgredb.db_connection import DatabaseConnection
+from repository.postgredb.db_connection import DatabaseConnection
 from repository.partition_manager import create_partition_if_not_exists
 from src.utils.log_consume import log_info
 
