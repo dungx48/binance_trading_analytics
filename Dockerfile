@@ -30,7 +30,7 @@ COPY . /app
 COPY requirements.txt /app/requirements.txt
 
 # Sync the project into a new environment, using the frozen lockfile
-RUN uv sync --frozen || uv pip install -r requirements.txt
+RUN uv sync --frozen
 
 # Presuming there is a `my_app` command provided by the project
 CMD ["uv", "run", "src/main.py"]
