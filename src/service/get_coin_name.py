@@ -1,4 +1,4 @@
-from src.repository.postgredb.db_connection import DatabaseConnection
+from repository.postgredb.db_connection import DatabaseConnection
 from utils.log_consume import log_info
 import requests
 import os
