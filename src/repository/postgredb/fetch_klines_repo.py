@@ -1,13 +1,13 @@
 import time
 import math
-from repository.db_connection import DatabaseConnection
+from src.repository.postgredb.db_connection import DatabaseConnection
 from utils.log_consume import log_info, log_error
 
 class FetchKlinesRepository():
     def __init__(self):
         pass
 
-    def save_to_db(self, data, symbol):
+    def save_to_db(self, data, base_symbol, quote_symbol):
         db = DatabaseConnection()
         conn = db.connection
         cursor = conn.cursor()
@@ -15,7 +15,8 @@ class FetchKlinesRepository():
         try:
             formatted_data = [
                 (
-                    symbol,
+                    base_symbol,
+                    quote_symbol,
                     row[0],  # trade_date
                     row[1],  # open_price
                     row[2],  # high_price
@@ -28,12 +29,12 @@ class FetchKlinesRepository():
             ]
 
             sql = """
-            INSERT INTO daily_klines (
-                symbol, trade_date, open_price, high_price,
+            INSERT INTO fact_coin_metrics (
+                base_symbol, quote_symbol, trade_date, open_price, high_price,
                 low_price, close_price, volume, trade_count
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (symbol, trade_date) DO NOTHING;
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (base_symbol, trade_date) DO NOTHING;
             """
 
             total = len(formatted_data)
@@ -58,18 +59,18 @@ class FetchKlinesRepository():
                 bar = '█' * filled_length + '-' * (progress_bar_length - filled_length)
 
                 log_info(
-                    f"{symbol} ✅ [{bar}] {percent_done:.2f}% - {inserted}/{total} dòng "
+                    f"{base_symbol} ✅ [{bar}] {percent_done:.2f}% - {inserted}/{total} dòng "
                     f"- ⏱ {batch_end - batch_start:.2f} giây"
                 )
 
             overall_end = time.time()
-            log_info(f"🏁 {symbol} - Hoàn tất insert, tổng thời gian: {overall_end - overall_start:.2f} giây")
+            log_info(f"🏁 {base_symbol} - Hoàn tất insert, tổng thời gian: {overall_end - overall_start:.2f} giây")
 
         except Exception as e:
             conn.rollback()
-            log_error(f"❌ {symbol} - Lỗi khi insert dữ liệu vào DB: {e}")
+            log_error(f"❌ {base_symbol} - Lỗi khi insert dữ liệu vào DB: {e}")
 
         finally:
             cursor.close()
             conn.close()
-            log_info(f"🔒 {symbol} - Đã đóng kết nối với DB")
+            log_info(f"🔒 Đã đóng kết nối với DB")

@@ -1,10 +1,9 @@
 import websockets
 import json
 from datetime import datetime, timezone
-from dotenv import load_dotenv
 import asyncio
 
-from repository.db_connection import DatabaseConnection
+from src.repository.postgredb.db_connection import DatabaseConnection
 from repository.partition_manager import create_partition_if_not_exists
 from src.utils.log_consume import log_info
 
@@ -45,8 +44,6 @@ async def fetch_binance():
             log_info(f"Saved: {row}")
 
 if __name__ == "__main__":
-    # Load biến môi trường từ .env
-    # load_dotenv()
     
     log_info("Starting Binance WebSocket...")
     asyncio.run(fetch_binance())

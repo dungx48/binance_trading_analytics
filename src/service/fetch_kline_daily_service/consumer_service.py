@@ -1,7 +1,6 @@
 import json
-from dotenv import load_dotenv
-from repository.fetch_klines_repo import FetchKlinesRepository
-from repository.redis_connection import RedisConnection
+from src.repository.postgredb.fetch_klines_repo import FetchKlinesRepository
+from src.repository.redis.redis_connection import RedisConnection
 from utils.log_consume import log_info, log_error
 
 class ConsumeKlinesDailyService:
@@ -17,15 +16,16 @@ class ConsumeKlinesDailyService:
                 _, raw_data = self.redis.blpop("klines_queue")
                 payload = json.loads(raw_data)
 
-                symbol = payload.get("symbol")
+                base_symbol = payload.get("base_symbol")
+                quote_symbol = payload.get("quote_symbol")
                 data = payload.get("data")
 
-                if not symbol or not isinstance(data, list):
+                if not base_symbol or not isinstance(data, list):
                     log_error("❌ Payload không hợp lệ. Bỏ qua message.")
                     continue
 
-                log_info(f"📥 Đang insert {len(data)} dòng dữ liệu của {symbol} vào DB...")
-                self.repo.save_to_db(data, symbol)
+                log_info(f"📥 Đang insert {len(data)} dòng dữ liệu của {base_symbol} vào DB...")
+                self.repo.save_to_db(data, base_symbol, quote_symbol)
 
             except json.JSONDecodeError as je:
                 log_error(f"❌ JSON Decode Error: {je}")
@@ -33,6 +33,5 @@ class ConsumeKlinesDailyService:
                 log_error(f"❌ Lỗi không xác định khi xử lý message: {e}")
 
 if __name__ == "__main__":
-    # load_dotenv()
     consumer = ConsumeKlinesDailyService()
     consumer.consume_and_push_to_db()

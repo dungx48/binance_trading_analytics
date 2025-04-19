@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional
 
 @dataclass
 class KlinesRequest():
-    symbol: str
+    base_symbol: str
+    quote_symbol: str
     interval: str
     start_time: int
     end_time: int

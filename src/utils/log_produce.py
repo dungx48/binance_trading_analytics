@@ -21,7 +21,7 @@ def setup_basic_logging(level=logging.INFO, log_dir=DEFAULT_LOG_DIR, log_prefix=
     # Dùng định dạng ngày (không có giờ phút giây) để chỉ có 1 file log/ngày
     today_str = datetime.utcnow().strftime("%Y-%m-%d")  # dùng UTC để khớp với when='midnight'
     log_filename = os.path.join(DEFAULT_LOG_DIR, f"{log_prefix}.{today_str}.log")
-    log_path = os.path.join(log_dir, log_filename)
+    # log_path = os.path.join(log_dir, log_filename)
 
     log_format = logging.Formatter(
         fmt="%(asctime)s - %(levelname)s - %(message)s",
@@ -35,7 +35,7 @@ def setup_basic_logging(level=logging.INFO, log_dir=DEFAULT_LOG_DIR, log_prefix=
         root_logger.handlers.clear()
 
     file_handler = TimedRotatingFileHandler(
-        log_path, when="midnight", interval=1, backupCount=7, encoding="utf-8", utc=True
+        log_filename, when="midnight", interval=1, backupCount=7, encoding="utf-8", utc=True
     )
     file_handler.setFormatter(log_format)
     root_logger.addHandler(file_handler)
