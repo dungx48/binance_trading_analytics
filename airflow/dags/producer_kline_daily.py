@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 
-from src.service.fetch_kline_daily_service.fetch_service import run_daily_producer
+from src.service.fetch_kline_daily_service.producer_service import run_daily_producer
 
 default_args = {
     'owner': 'airflow',
