@@ -22,6 +22,10 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 # Add uv to PATH
 ENV PATH="/root/.local/bin/:$PATH"
 
+# folder logs
+ENV CUSTOM_LOG_DIR=/app/logs/app
+RUN mkdir -p $CUSTOM_LOG_DIR
+
 # Copy source code
 WORKDIR /app
 COPY . /app

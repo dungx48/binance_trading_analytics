@@ -9,6 +9,7 @@ class TimeEnums:
     @staticmethod
     def START_TIME() -> int:
         return _to_milliseconds(pd.Timestamp("2017-01-01"))
+        # return _to_milliseconds(pd.Timestamp("2025-04-15"))
 
     @staticmethod
     def YESTERDAY() -> int:

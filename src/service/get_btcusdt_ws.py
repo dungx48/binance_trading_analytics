@@ -2,10 +2,12 @@ import websockets
 import json
 from datetime import datetime, timezone
 import asyncio
+import logging
 
 from repository.postgredb.db_connection import DatabaseConnection
 from repository.partition_manager import create_partition_if_not_exists
-from src.utils.log_consume import log_info
+
+logger = logging.getLogger(__name__)
 
 async def fetch_binance():
     """Nhận dữ liệu từ Binance và lưu vào DB"""
@@ -41,9 +43,9 @@ async def fetch_binance():
             """, row)
 
             conn.commit()
-            log_info(f"Saved: {row}")
+            logger.info(f"Saved: {row}")
 
 if __name__ == "__main__":
     
-    log_info("Starting Binance WebSocket...")
+    logger.info("Starting Binance WebSocket...")
     asyncio.run(fetch_binance())
