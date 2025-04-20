@@ -1,13 +1,15 @@
-from repository.postgredb.db_connection import DatabaseConnection
-from utils.log_consume import log_info
 import requests
 import os
 import time
 import hmac
 import hashlib
+import logging
+
+from repository.postgredb.db_connection import DatabaseConnection
 
 BINANCE_API_KEY = os.environ.get("BINANCE_API_KEY")
 BINANCE_SECRET_KEY = os.environ.get("BINANCE_SECRET_KEY")
+logger = logging.getLogger(__name__)
 
 class CoinInfoService():
     def __init__(self):
@@ -69,4 +71,4 @@ class CoinInfoService():
         cursor.close()
         conn.close()
 
-        log_info("Đã cập nhật danh sách coin vào PostgreSQL!")
+        logger.info("Đã cập nhật danh sách coin vào PostgreSQL!")
