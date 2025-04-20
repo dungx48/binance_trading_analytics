@@ -1,5 +1,3 @@
-# utils/logging_config.py
-
 import os, sys, logging
 from datetime import datetime
 from logging.handlers import TimedRotatingFileHandler
