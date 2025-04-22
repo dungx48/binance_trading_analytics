@@ -10,8 +10,7 @@ def setup_logging(prefix: str, level: int = logging.INFO):
     log_dir = os.environ.get("CUSTOM_LOG_DIR", "/app/logs/app")
     os.makedirs(log_dir, exist_ok=True)
 
-    today = datetime.utcnow().strftime("%Y-%m-%d")
-    path = os.path.join(log_dir, f"{prefix}.{today}.log")
+    path = os.path.join(log_dir, f"{prefix}.log")
 
     fmt = "%(asctime)s - %(levelname)s - %(message)s"
     datefmt = "%Y-%m-%d %H:%M:%S"
